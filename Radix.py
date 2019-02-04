@@ -6,77 +6,94 @@
 Bucket sort algorithm.
 L - unsorted list of numbers
 M - upper bound of the range of number in the list (0...M)
-Returns sorted list s.
+x - position in each word/name in L to be sorted.
+Returns sorted list ret
 '''
-def Bucket(L):
-    # Should we find the max first and set that equal to M?
-    maxx = 0
-    for item in L:
-        if item > maxx:
-            maxx = item
-    
-    M = maxx + 1
-    # Initialize bucket list and sorted list to all 0's
-    s = []
-    bucket = []
-    for i in range(0, M):
-        bucket.append(0)
-    for i in range(0,len(L)):
-        s.append(0)
+def Bucket(L, x):
 
-    for i in L:
-        bucket[i] = bucket[i] + 1
+    M = 128 ## Set to 128 for # ASCII chars
+    B = []
+    for i in range(M): ## Initalize empty ASCII matrix
+        B.append([]*M)  
 
+    for i in range(len(L)):
+        ascii_num = ord(L[i][x]) ## ASCII num of the character at position x
+        B[ascii_num].append(L[i])
+         
+    ret = [] ## Initialize list for sorted values
+    for i in range(len(L)):
+        ret.append([])
+
+    ## Class notes ##
     i = 0
-    for j in range(0, M):
-        for k in range(0, bucket[j]):
-            s[i] = j
-            i = i + 1
+    for j in range(M):
+        for k in range(len(B[j])):
+            ret[i] = B[j][k]
+            i+=1        
 
-    return s
+    return ret
+
 '''
-Radix Sort Algorith.
+Radix Sort Algorithm, implemented using Bucket Sort.
 L - Unsorted list of strings.
 k - Upper bound of the length of each string in the list.
 Returns a sorted list of strings.
 '''
-def Radix(L, k):
-    # Strings must be exactly length k. (k digits)
+def RadixSort(L, k):
+    # Strings must be exactly length k.
     ret = [] # list to be returned
-    ret_ascii = []
-    combined = []
+    # ret_ascii = []
 
     for word in L:
         if len(word) < k:
             # add 0's to make word length equal to k
             word = word + ('0' * (k-len(word)))
-            ret.append(word)
-        elif len(word) == k:
-            ret.append(word)
+        ret.append(word)
 
     for i in range(k-1,-1,-1):
-        temp = []
-        for word in ret_ascii:
-            temp.append(word[i])
+        ret = Bucket(ret, i)
 
-        temp = Bucket(temp)
+    ret2 = []
+    for word in ret:
+        ret2.append(word.strip("0"))
 
+    return ret2 
 
+'''
+Function to handle Kattis input and output formatting.
 
-    #print(combined)
-    #print(temp)
-    return(ret)
+IE:
+(In)              (Out)
+3                 Bach
+Mozart            Beethoven
+Beethoven         Mozart 
+Bach
+'''
+def In():
+    n = int(input()) ## Number of iterations given by input (the following n inputs are to be sorted)
+                     ## Convert user str input to int
 
-def main():
-    '''
-    unsorted = [3,1,4,1,1,5, 9, 10, 8, 9, 4]
-    print("input:", unsorted)
-    print("output:", Bucket(unsorted))
-    print("should be: [1,1,1,3,4,5]")
-    '''
+    for i in range(0, n):
+        L = [] ## Initialize list to store input words
+        k = 0  ## Initialize k value to 0
+
+        for i in range(n):  ## n = len(L)
+            word = input()
+            L.append(word)
+            if len(word) > k: ## Set k to the length of the longest word in L
+                k = len(word)
+        
+        ret = RadixSort(L, k)
+        print("")
+        for word in ret:
+            print(word)
+
+        n = int(input()) ## Take next n for next set of name inputs
+        if n == 0:       ## End input once a '0' is received     
+            break
+
+def main():    
+    In()
     
-    namelist = ["robb", "jon","rickon", "bran"]
-    Radix(namelist, 6)
-
 if __name__ == "__main__":
     main()

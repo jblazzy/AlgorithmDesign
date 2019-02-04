@@ -1,6 +1,9 @@
 ## Josh Blaz
 ## 2-D array problem (Chapter 2, Problem 6)
 
+'''
+Function to solve Problem 6, Chapter 2 of "Algorithm Design"
+'''
 def array(A):
     n = len(A)
     print(A)
