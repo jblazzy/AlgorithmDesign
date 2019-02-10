@@ -9,8 +9,32 @@ women - women's preference dictionary taken from input.
 Returns a stable matching.
 '''
 def GS(men, women):
-    #Create inverted list for each woman
-    ranks = {}  
+
+    # Create inverted preference list for each woman
+    ranks = {} 
+    for woman in women:
+        index = 1
+        ranks[woman] = {}
+        for man in women[woman]:
+            ranks[woman][man] = index
+            index = index + 1
+    
+    # Initialize proposed index to 1 (most desirable woman man hasn't proposed to yet)
+    lastProposed = {}
+    for man in men:
+        lastProposed[man] = 1
+
+    #Initialize all to unpaired
+    unpaired = []
+    for man in men:
+        unpaired.append(man)
+    
+    while len(unpaired) != 0: # While some unpaired man hasn't proposed to every woman
+        man = unpaired.pop()
+
+
+
+    
 
 def In():
     n = int(input()) ## Number of iterations given by input (the following n inputs are to be sorted)
