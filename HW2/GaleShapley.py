@@ -23,6 +23,11 @@ def GS(men, women):
     lastProposed = {}
     for man in men:
         lastProposed[man] = 1
+    
+    # Dictionary to keep track of women pairings
+    paired_women = {}
+    for woman in women:
+        paired_women[woman] = ""
 
     #Initialize all to unpaired
     unpaired = []
@@ -31,7 +36,8 @@ def GS(men, women):
     
     while len(unpaired) != 0: # While some unpaired man hasn't proposed to every woman
         man = unpaired.pop()
-
+        index = lastProposed[man] # Next woman to propose to
+        print(men[man][index])
 
 
     
