@@ -19,10 +19,10 @@ def GS(men, women):
             ranks[woman][man] = index
             index = index + 1
     
-    # Initialize proposed index to 1 (most desirable woman man hasn't proposed to yet)
+    # Initialize proposed index to 0 (most desirable woman man hasn't proposed to yet)
     lastProposed = {}
     for man in men:
-        lastProposed[man] = 1
+        lastProposed[man] = 0
     
     # Dictionary to keep track of women pairings
     paired_women = {}
@@ -32,48 +32,75 @@ def GS(men, women):
     #Initialize all to unpaired
     unpaired = []
     for man in men:
-        unpaired.append(man)
+        unpaired.insert(0, man)
     
     while len(unpaired) != 0: # While some unpaired man hasn't proposed to every woman
-        man = unpaired.pop()
-        index = lastProposed[man] # Next woman to propose to
-        print(men[man][index])
+        man = unpaired.pop() # Man
+        index = lastProposed[man] # Index of next woman to propose to on pref list
+        woman = men[man][index] # Most desirable woman man hasn't proposed to
 
+        if paired_women[woman] == "": # Woman is unpaired
+            paired_women[woman] = man
+            lastProposed[man] += 1 # Increment man's last proposed index
+
+        elif (ranks[woman][man] < ranks[woman][paired_women[woman]]): # Woman prefers man to betrothed
+                unpaired.insert(0, paired_women[woman]) # put betrothed back on stack
+                lastProposed[man] += 1 # Increment man's last proposed index
+                paired_women[woman] = man #Update paired women dictionary
+        
+        else: # Man still unmatched
+            unpaired.insert(0, man) # Back on Stack
+            lastProposed[man] += 1  # Next woman
+
+    print("Stable Matching:")
+    print("M - W")
+    print("-----")
+    for woman in paired_women:
+        print(paired_women[woman], "-", woman)
 
     
+'''
+Function that takes men and women preference matrixes as input.
 
+Example input:
+--------------
+3
+Men preference matrix:
+X A B C
+Y A C B
+Z A B C
+Women preference matrix:
+A Y X Z
+B Z Y X
+C Z X Y
+'''
 def In():
     n = int(input()) ## Number of iterations given by input (the following n inputs are to be sorted)
 
     men = {}
     women = {}
 
-    print("Men preference array:")
+    print("Men preference matrix:")
     for i in range(0, n):
         split = input().split(" ")
         men[split[0]] = split[1:]
     
-    print("Women preference array:")
+    print("Women preference matrix:")
     for i in range(0, n):
         split = input().split(" ")
         women[split[0]] = split[1:]
-
-    print("men: ",men)
-    print("women: ",women)
+    
+    print()
+    #print("men: ",men)
+    #print("women: ",women)
     
     return men, women
 
 def main():    
-    '''
-    ## Men's preferences
-    men = [['X','Y','Z'],['A','A','A'],['B','C','B'],['C','B','C']]
-    ## Women's preferences
-    women = [['A','B','C'],['Y','Z','Z'],['X','Y','X'],['Z','X','Y']]
-    '''
     men, women = In()
-
     GS(men,women)
 
+    
 
     
 if __name__ == "__main__":
