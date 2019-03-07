@@ -12,18 +12,28 @@ def SC(L):
     iL = 0 # Left inversions
     iR = 0 # Right inversions
     iB = 0 # Between (combined) inversions
+    LL = []
+    LR = []
+    LB = []
 
     if len(L)==1:
         return(0,L)
 
-    LL,LR = split(L) # Split evenly into two lists (Left and Right)
+    L1,L2 = split(L) # Split evenly into two lists (Left and Right)
+
+    (iL, LL) = SC(L1)
+    (iR, LR) = SC(L2)
+    (iB, LB) = merge(LL,LR)
+
+    return(iL + iR + iB, LB)
+
 
 
 '''
 Function that merges and counts inversions.
 Returns the list and the inversions between.
 '''
-def Merge(LL,LR):
+def merge(LL,LR):
     L = [] # Solution
     i = 0
     j = 0
@@ -31,7 +41,7 @@ def Merge(LL,LR):
 
     while(i < len(LL) and j < len(LR)):
         L.append(min(LL[i],LR[i])) # Append the smaller of LL[i] and LR[i] to L
-        
+
         if(LL[i] > LR[j]):
             iB += len(LL) - i
             i += 1
