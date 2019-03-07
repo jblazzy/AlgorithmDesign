@@ -19,7 +19,7 @@ def SC(L):
     if len(L)==1:
         return(0,L)
 
-    L1,L2 = split(L) # Split evenly into two lists (Left and Right)
+    L1,L2 = splitty(L) # Split evenly into two lists (Left and Right)
 
     (iL, LL) = SC(L1)
     (iR, LR) = SC(L2)
@@ -57,7 +57,7 @@ Function that splits a list in half.
 L - List of integers.
 Returns two halves of a list.
 '''
-def split(L):
+def splitty(L):
     temp1 = [] # First half
     temp2 = [] # First half
 
@@ -65,13 +65,30 @@ def split(L):
     temp2 = L[len(L)//2:]
     return temp1,temp2
 
+'''
+Function that reads input from standard input.
+'''
+def In():
+    length = int(input()) ## Length of original list
+
+    S = input().split() # Split up list to convert into integers
+    L = []
+
+    for num in S:
+        L.append(int(num))
+
+    return L
 
 def main():
-    L = [1,2,3,4,5,6,7,8]
+    L = In()
+    ret1 = 0
+    ret2 = []
 
-    print(L)
+    ret1, ret2 = SC(L)
 
-    print(split(L))
+    print(ret1) ## Only print the number of inversions (not the list)
+
+    
 
 if __name__ == "__main__":
     main()
