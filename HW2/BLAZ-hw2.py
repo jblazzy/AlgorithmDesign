@@ -101,8 +101,6 @@ def main():
     GS(men,women)
 
     
-
-    
 if __name__ == "__main__":
     main()
 

@@ -2,7 +2,6 @@
 ## 3/7/19
 ## Sort and Count Algorithm
 
-
 '''
 Function that implements the Sort and Count Algorithm.
 L - List of integers.
@@ -40,14 +39,18 @@ def merge(LL,LR):
     iB = 0 
 
     while(i < len(LL) and j < len(LR)):
-        L.append(min(LL[i],LR[i])) # Append the smaller of LL[i] and LR[i] to L
+        L.append(min(LL[i],LR[j])) # Append the smaller of LL[i] and LR[i] to L
 
         if(LL[i] > LR[j]):
             iB += len(LL) - i
-            i += 1
-        else:
-            iB += len(LR) - j
             j += 1
+        else:
+            i += 1
+
+    if i < len(LL): 
+        L = L + LL[i:] # Add the rest of LL to L 
+    else: # if i is not less than len(LL), j must be less than len(LR)
+        L = L + LR[j:]
 
     return(iB, L)
 
